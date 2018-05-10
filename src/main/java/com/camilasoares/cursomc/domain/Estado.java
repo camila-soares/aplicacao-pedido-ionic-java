@@ -8,14 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.persistence.OneToMany;
 
 @Entity
-public class Product implements Serializable {
+public class Estado implements Serializable {
 
 	
 	private static final long serialVersionUID = 1L;
@@ -24,25 +20,19 @@ public class Product implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
 	private String nome;
-	private double preco;
 	
-	@JsonBackReference
-	@ManyToMany
-	@JoinTable(name = "PRODUTO_CATEGORIA", 
-		joinColumns = @JoinColumn(name = "produto_id"),
-		inverseJoinColumns = @JoinColumn(name = "categoria_id")
-	)
-	private List<Category> categorias = new ArrayList<>();
+	@OneToMany(mappedBy="estado")
+	private List<Cidade> cidades = new ArrayList<>();
 	
-	public Product(){
+	public Estado(){
 		
 	}
 
-	public Product(Integer id, String nome, double preco) {
+	public Estado(Integer id, String nome, List<Cidade> cidades) {
 		super();
 		this.id = id;
 		this.nome = nome;
-		this.preco = preco;
+		
 	}
 
 	public Integer getId() {
@@ -61,20 +51,12 @@ public class Product implements Serializable {
 		this.nome = nome;
 	}
 
-	public double getPreco() {
-		return preco;
+	public List<Cidade> getCidades() {
+		return cidades;
 	}
 
-	public void setPreco(double preco) {
-		this.preco = preco;
-	}
-
-	public List<Category> getCategories() {
-		return categorias;
-	}
-
-	public void setCategorias(List<Category> categorias) {
-		this.categorias = categorias;
+	public void setCidades(List<Cidade> cidades) {
+		this.cidades = cidades;
 	}
 
 	@Override
@@ -93,7 +75,7 @@ public class Product implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Product other = (Product) obj;
+		Estado other = (Estado) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -101,6 +83,7 @@ public class Product implements Serializable {
 			return false;
 		return true;
 	}
+	
 	
 	
 }

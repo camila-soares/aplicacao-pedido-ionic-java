@@ -26,7 +26,7 @@ public class Category implements Serializable {
 	@ManyToMany(mappedBy="categorias")
 	private List<Product> produtos = new ArrayList<>();
 	
-	public List<Product> getProdutos() {
+	public List<Product> getProducts() {
 		return produtos;
 	}
 
