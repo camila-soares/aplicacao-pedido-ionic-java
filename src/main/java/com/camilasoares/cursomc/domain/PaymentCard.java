@@ -1,7 +1,9 @@
 package com.camilasoares.cursomc.domain;
 
-import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
+import javax.persistence.Entity;
 
+import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
+@Entity
 public class PaymentCard extends Payment {
 	private static final long serialVersionUID = 1L;
 	
