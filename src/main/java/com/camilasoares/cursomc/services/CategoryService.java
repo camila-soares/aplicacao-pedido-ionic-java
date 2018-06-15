@@ -2,15 +2,22 @@ package com.camilasoares.cursomc.services;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.camilasoares.cursomc.domain.Category;
+import com.camilasoares.cursomc.dto.CategoryDTO;
 import com.camilasoares.cursomc.repositories.CategoryRepository;
 import com.camilasoares.cursomc.services.exception.DataIntegrityException;
+import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
 
-import javassist.tools.rmi.ObjectNotFoundException;
+
 
 @Service
 public class CategoryService {
@@ -46,5 +53,18 @@ public class CategoryService {
 			throw new DataIntegrityException("Não é possivel uma Categoria que possiu produto");
 		}
 		
+	}
+
+	public List<Category> findAll() {
+		return repo.findAll();
+	}
+	
+	public Page<Category> findPage(Integer page,Integer linesForpage, String orderBy, String direction){
+		PageRequest pageRequest = new PageRequest(page, linesForpage, Direction.valueOf(direction), orderBy);
+		return repo.findAll(pageRequest);
+	}
+	
+	public Category fromDTO(CategoryDTO objDTO) {
+		return new Category(objDTO.getId(), objDTO.getNome());
 	}
 }
