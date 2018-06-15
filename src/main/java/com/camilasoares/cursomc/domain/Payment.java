@@ -14,7 +14,7 @@ import javax.persistence.OneToOne;
 import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
-public class Payment implements Serializable {
+public abstract class Payment implements Serializable {
 	private static final long serialVersionUID = 1L;
 	 
 	@Id
