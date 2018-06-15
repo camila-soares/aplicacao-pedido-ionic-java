@@ -23,7 +23,7 @@ public class PedidoResources {
 	private PedidoService service;
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Long id) throws ObjectNotFoundException {
+	public ResponseEntity<Pedido> find(@PathVariable Long id) throws ObjectNotFoundException {
 		
 		Pedido obj = service.find(id);
 		return ResponseEntity.ok().body(obj);

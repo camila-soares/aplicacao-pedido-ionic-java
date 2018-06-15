@@ -1,4 +1,4 @@
-package com.camilasoares.cursomc.resouces.exception;
+package com.camilasoares.cursomc.resouces.exception.handler;
 
 import java.io.Serializable;
 
