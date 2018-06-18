@@ -6,13 +6,16 @@ import javax.persistence.Entity;
 
 import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 @Entity
+@JsonTypeName("pagamentoComBoleto")
 public class PaymentBoleto extends Payment{
 	private static final long serialVersionUID = 1L;
 	
 	@JsonFormat(pattern="dd/MM/yyy")
 	private Date dataVencimento;
+	
 	@JsonFormat(pattern="dd/MM/yyy")
 	private Date dataPagamento;
 	

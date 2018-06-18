@@ -3,7 +3,10 @@ package com.camilasoares.cursomc.domain;
 import javax.persistence.Entity;
 
 import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PaymentCard extends Payment {
 	private static final long serialVersionUID = 1L;
 	
