@@ -24,7 +24,7 @@ public class CategoryService {
 
 	@Autowired
 	private CategoryRepository repo;
-	
+
 	public Category find(Integer id) throws ObjectNotFoundException{
 		Category obj = repo.findOne(id);
 		if(obj == null) {
@@ -40,30 +40,36 @@ public class CategoryService {
 	}
 
 	public Category update(Category obj) throws ObjectNotFoundException {
-		find(obj.getId());
-		return repo.save(obj);
+		Category newObj  = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
+	}
+
+	private void updateData(Category newObj, Category obj) {
+		newObj.setNome(obj.getNome());
+
 	}
 
 	public void delete(Integer id) throws ObjectNotFoundException {
 		find(id);
 		try{
-		repo.delete(id);
+			repo.delete(id);
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel uma Categoria que possiu produto");
 		}
-		
+
 	}
 
 	public List<Category> findAll() {
 		return repo.findAll();
 	}
-	
+
 	public Page<Category> findPage(Integer page,Integer linesForpage, String orderBy, String direction){
 		PageRequest pageRequest = new PageRequest(page, linesForpage, Direction.valueOf(direction), orderBy);
 		return repo.findAll(pageRequest);
 	}
-	
+
 	public Category fromDTO(CategoryDTO objDTO) {
 		return new Category(objDTO.getId(), objDTO.getNome());
 	}

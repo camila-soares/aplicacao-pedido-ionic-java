@@ -55,7 +55,7 @@ public class ClientService {
 		clientRepository.delete(id);
 		}
 		catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possivel uma Cliente  que possiu produto");
+			throw new DataIntegrityException("Não é possivel excluir  Cliente o mesmo possui pedidos");
 		}
 		
 	}
