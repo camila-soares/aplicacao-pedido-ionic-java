@@ -2,13 +2,13 @@ package com.camilasoares.cursomc.dto;
 
 import java.io.Serializable;
 
-import javax.websocket.ClientEndpoint;
-
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.camilasoares.cursomc.services.validation.ClientInsert;
 
+@ClientInsert
 public class ClientNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
