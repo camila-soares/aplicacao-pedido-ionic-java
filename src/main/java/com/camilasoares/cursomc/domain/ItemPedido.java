@@ -20,6 +20,8 @@ public class ItemPedido implements Serializable {
 	private Double desconto;
 	private Integer quantidade;
 	private Double preco;
+
+	
 	
 	public ItemPedido() {
 	}
@@ -32,10 +34,20 @@ public class ItemPedido implements Serializable {
 		this.quantidade = quantidade;
 		this.preco = preco;
 	}
+	
+	
 
 	public double getSubTotal() {
 		return (preco - desconto) * quantidade;
 	}
+	
+//	public double getValorTotal(){
+//		double soma = 0.0;
+//		for(ItemPedido ip : itens){
+//			soma = soma + ip.getSubTotal();
+//		}
+//		return soma;
+//	}
 	
 	@JsonIgnore
 	public Pedido getPedido() {
