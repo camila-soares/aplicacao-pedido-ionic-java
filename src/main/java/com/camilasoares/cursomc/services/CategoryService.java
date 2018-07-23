@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.camilasoares.cursomc.domain.Category;
 import com.camilasoares.cursomc.dto.CategoryDTO;
@@ -33,7 +34,8 @@ public class CategoryService {
 		}
 		return obj;
 	}
-
+	
+	
 	public Category insert(Category obj) {
 		obj.setId(null);
 		return repo.save(obj);
