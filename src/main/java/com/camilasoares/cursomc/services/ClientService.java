@@ -9,7 +9,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,9 +32,9 @@ public class ClientService {
 	@Autowired
 	private AddressRepository addressRepository;
 	
-	@Autowired
-	private BCryptPasswordEncoder pe;
-	
+//	@Autowired
+//	private BCryptPasswordEncoder pe;
+//
 	@Autowired
 	private S3Service s3Service;
 	
@@ -96,7 +95,7 @@ public class ClientService {
 	}
 	
 	public Client fromDTO(ClientNewDTO objDTO) {
-		Client cli = new Client(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), ClientType.toEnum(objDTO.getTipo()), pe.encode(objDTO.getSenha()));
+		Client cli = new Client(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), ClientType.toEnum(objDTO.getTipo()), null);
 		Cidade cid = new Cidade(objDTO.getCidadeId(), null, null);
 		Adress end = new Adress(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), cli, cid);
 		cli.getEnderecos().add(end);
