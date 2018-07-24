@@ -4,10 +4,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
+import com.camilasoares.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.camilasoares.cursomc.domain.Adress;
+import com.camilasoares.cursomc.domain.Endereco;
 import com.camilasoares.cursomc.domain.Category;
 import com.camilasoares.cursomc.domain.Cidade;
 import com.camilasoares.cursomc.domain.Client;
@@ -20,14 +21,6 @@ import com.camilasoares.cursomc.domain.Pedido;
 import com.camilasoares.cursomc.domain.Product;
 import com.camilasoares.cursomc.domain.enums.ClientType;
 import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
-import com.camilasoares.cursomc.repositories.AdressRepository;
-import com.camilasoares.cursomc.repositories.CategoryRepository;
-import com.camilasoares.cursomc.repositories.CidadeRepository;
-import com.camilasoares.cursomc.repositories.ClientRepository;
-import com.camilasoares.cursomc.repositories.EstadoRepository;
-import com.camilasoares.cursomc.repositories.PaymentRepository;
-import com.camilasoares.cursomc.repositories.PedidoRepository;
-import com.camilasoares.cursomc.repositories.ProductRepository;
 
 @Service
 public class DBService {
@@ -124,8 +117,8 @@ public class DBService {
 		
 		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 		
-		Adress e1 = new Adress(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
-		Adress e2 = new Adress(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		Endereco e1 = new Endereco (null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
+		Endereco e2 = new Endereco (null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
 		
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 		

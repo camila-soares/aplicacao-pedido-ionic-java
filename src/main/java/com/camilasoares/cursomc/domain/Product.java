@@ -32,13 +32,13 @@ public class Product implements Serializable {
 	@JsonIgnore
 	@ManyToMany
 	@JoinTable(name = "PRODUTO_CATEGORIA", 
-		joinColumns = @JoinColumn(name = "produto_id"),
-		inverseJoinColumns = @JoinColumn(name = "categoria_id")
+		joinColumns = @JoinColumn(name = "product_id"),
+		inverseJoinColumns = @JoinColumn(name = "category_id")
 	)
 	private List<Category> categorias = new ArrayList<>();
 	
 	@JsonIgnore
-	@OneToMany(mappedBy="id.produto")
+	@OneToMany(mappedBy="id.product")
 	private Set<ItemPedido> itens = new HashSet<>();
 	
 	public Product(){}

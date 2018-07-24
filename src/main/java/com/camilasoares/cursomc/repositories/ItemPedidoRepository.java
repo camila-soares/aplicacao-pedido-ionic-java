@@ -1,4 +1,4 @@
-package com.camilasoares.cursomc.services;
+package com.camilasoares.cursomc.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

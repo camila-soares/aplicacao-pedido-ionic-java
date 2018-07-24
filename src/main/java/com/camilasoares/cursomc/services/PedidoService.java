@@ -4,8 +4,8 @@ package com.camilasoares.cursomc.services;
 
 import java.util.Date;
 
+import com.camilasoares.cursomc.repositories.ItemPedidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.camilasoares.cursomc.domain.ItemPedido;
 import com.camilasoares.cursomc.domain.PaymentBoleto;
@@ -16,6 +16,7 @@ import com.camilasoares.cursomc.repositories.PedidoRepository;
 import com.camilasoares.cursomc.repositories.ProductRepository;
 
 import javassist.tools.rmi.ObjectNotFoundException;
+import org.springframework.data.domain.Page;
 
 public class PedidoService {
 	
@@ -34,8 +35,8 @@ public class PedidoService {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
-	public Pedido find(Long id) throws ObjectNotFoundException {
-		Pedido pedido = repo.findOne(id);
+	public Pedido find(Integer id) throws ObjectNotFoundException {
+		Pedido pedido = repo.findOne ( id );
 		if(pedido == null) {
 			throw new ObjectNotFoundException("Pedido não encontrado! Id: " + id
 					+ ", Tipo: " + Pedido.class.getName());
@@ -45,7 +46,7 @@ public class PedidoService {
 	
 	
 	public Pedido insert(Pedido obj){
-		obj.setId(null);
+		obj.setId(1);
 		obj.setInstante(new Date());
 		obj.getPayment().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPayment().setPedido(obj);
@@ -62,6 +63,11 @@ public class PedidoService {
 		}
 		itemPedidoRepository.save(obj.getItens());
 		return obj;
+	}
+
+	public Page<Pedido> findPage(Integer page, Integer linesPage, String orderBy, String direction){
+
+		return null;
 	}
 
 }

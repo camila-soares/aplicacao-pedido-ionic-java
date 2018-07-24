@@ -12,52 +12,41 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Adress  implements Serializable {
-	private static final long serialVersionUID = 1L; 
+public class Endereco implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
-	private String lofradouro;
+	private String logradouro;
 	private String numero;
 	private String complemento;
 	private String bairro;
 	private String cep;
-	
+
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name="cliente_id")
+	@JoinColumn(name="client_id")
 	private Client client;
-	
+
 	@ManyToOne
 	@JoinColumn(name="cidade_id")
 	private Cidade cidade;
-	
-	
-	
-	public Cidade getCidade() {
-		return cidade;
+
+	public Endereco() {
 	}
 
-	public void setCidade(Cidade cidade) {
-		this.cidade = cidade;
-	}
-
-	public Adress(){
-		
-	}
-
-	public Adress(Integer id, String lofradouro, String numero, String complemento, String bairro, String cep,
-			Client client, Cidade cidade) {
+	public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
+					Client client, Cidade cidade) {
 		super();
 		this.id = id;
-		this.lofradouro = lofradouro;
+		this.logradouro = logradouro;
 		this.numero = numero;
 		this.complemento = complemento;
 		this.bairro = bairro;
 		this.cep = cep;
 		this.client = client;
-		this.cidade = cidade;
+		this.setCidade(cidade);
 	}
 
 	public Integer getId() {
@@ -68,12 +57,12 @@ public class Adress  implements Serializable {
 		this.id = id;
 	}
 
-	public String getLofradouro() {
-		return lofradouro;
+	public String getLogradouro() {
+		return logradouro;
 	}
 
-	public void setLofradouro(String lofradouro) {
-		this.lofradouro = lofradouro;
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
 	}
 
 	public String getNumero() {
@@ -112,11 +101,17 @@ public class Adress  implements Serializable {
 		return client;
 	}
 
-	public void setClient(Client client) {
+	public void setCliente(Client client) {
 		this.client = client;
 	}
-	
-	
+
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
+	}
 
 	@Override
 	public int hashCode() {
@@ -134,7 +129,7 @@ public class Adress  implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Adress other = (Adress) obj;
+		Endereco other = (Endereco) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -142,8 +137,7 @@ public class Adress  implements Serializable {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
+
+
+
 }

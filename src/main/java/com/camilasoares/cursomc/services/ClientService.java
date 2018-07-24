@@ -12,7 +12,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.camilasoares.cursomc.domain.Adress;
+import com.camilasoares.cursomc.domain.Endereco;
 import com.camilasoares.cursomc.domain.Cidade;
 import com.camilasoares.cursomc.domain.Client;
 import com.camilasoares.cursomc.domain.enums.ClientType;
@@ -97,7 +97,7 @@ public class ClientService {
 	public Client fromDTO(ClientNewDTO objDTO) {
 		Client cli = new Client(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), ClientType.toEnum(objDTO.getTipo()), null);
 		Cidade cid = new Cidade(objDTO.getCidadeId(), null, null);
-		Adress end = new Adress(null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), cli, cid);
+		Endereco end = new Endereco (null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), cli, cid);
 		cli.getEnderecos().add(end);
 		cli.getTelefones().add(objDTO.getTelefone1());
 		if(objDTO.getTelefone2() != null){
