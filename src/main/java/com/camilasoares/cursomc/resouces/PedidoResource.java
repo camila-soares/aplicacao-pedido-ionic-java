@@ -25,14 +25,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 @RequestMapping(value="/pedidos")
 public class PedidoResource {
 
-	private final PedidoService pedidoService;
-
-
-
 	@Autowired
-	public PedidoResource(PedidoService pedidoService){
-		this.pedidoService = pedidoService;
-	}
+	private PedidoService pedidoService;
 
 	@RequestMapping(value="/{id}", method=RequestMethod.GET)
 	public ResponseEntity<Pedido> find(@PathVariable Integer id) throws ObjectNotFoundException {
