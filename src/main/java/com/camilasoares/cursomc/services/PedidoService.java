@@ -4,16 +4,13 @@ package com.camilasoares.cursomc.services;
 
 import java.util.Date;
 
-import com.camilasoares.cursomc.repositories.ItemPedidoRepository;
+import com.camilasoares.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.camilasoares.cursomc.domain.ItemPedido;
 import com.camilasoares.cursomc.domain.PaymentBoleto;
 import com.camilasoares.cursomc.domain.Pedido;
 import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
-import com.camilasoares.cursomc.repositories.PaymentRepository;
-import com.camilasoares.cursomc.repositories.PedidoRepository;
-import com.camilasoares.cursomc.repositories.ProductRepository;
 
 import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.data.domain.Page;
@@ -21,7 +18,7 @@ import org.springframework.data.domain.Page;
 public class PedidoService {
 	
 	@Autowired
-	private PedidoRepository repo;
+	private PedidoRepository pedidoRepository;
 	
 	@Autowired
 	private BoletoService boletoService;
@@ -34,9 +31,12 @@ public class PedidoService {
 	
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+
+	@Autowired
+	private ClientRepository clientRepository;
 	
 	public Pedido find(Integer id) throws ObjectNotFoundException {
-		Pedido pedido = repo.findOne ( id );
+		Pedido pedido = pedidoRepository.findOne ( id );
 		if(pedido == null) {
 			throw new ObjectNotFoundException("Pedido não encontrado! Id: " + id
 					+ ", Tipo: " + Pedido.class.getName());
@@ -54,7 +54,7 @@ public class PedidoService {
 			PaymentBoleto pagtoBoleto = (PaymentBoleto) obj.getPayment();
 			boletoService.preencherPaymentComBoleto(pagtoBoleto, obj.getInstante());
 		}
-		obj = repo.save(obj);
+		obj = pedidoRepository.save(obj);
 		paymentRepository.save(obj.getPayment());
 		for(ItemPedido ip : obj.getItens()){
 			ip.setDesconto(0.0);
@@ -62,6 +62,7 @@ public class PedidoService {
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.save(obj.getItens());
+		System.out.println ( obj );
 		return obj;
 	}
 

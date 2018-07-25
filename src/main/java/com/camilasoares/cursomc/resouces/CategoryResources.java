@@ -33,13 +33,13 @@ public class CategoryResources {
 	private CategoryService service;
 	
 	@RequestMapping(value="/{id}",method=RequestMethod.GET)
-	public ResponseEntity<Category> find(@PathVariable Integer id) throws ObjectNotFoundException {
-		
+	public ResponseEntity<Category> find(@PathVariable Integer id)  {
 		Category obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
 		
 	}
-	
+
+
 	@RequestMapping(method=RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoryDTO objDTO){
 		Category obj = service.fromDTO(objDTO);
