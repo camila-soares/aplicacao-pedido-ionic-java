@@ -1,20 +1,8 @@
 package com.camilasoares.cursomc.services;
 
-import java.util.List;
-
-
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort.Direction;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import com.camilasoares.cursomc.domain.Endereco;
 import com.camilasoares.cursomc.domain.Cidade;
 import com.camilasoares.cursomc.domain.Client;
+import com.camilasoares.cursomc.domain.Endereco;
 import com.camilasoares.cursomc.domain.enums.ClientType;
 import com.camilasoares.cursomc.dto.ClientDTO;
 import com.camilasoares.cursomc.dto.ClientNewDTO;
@@ -22,6 +10,16 @@ import com.camilasoares.cursomc.repositories.AddressRepository;
 import com.camilasoares.cursomc.repositories.ClientRepository;
 import com.camilasoares.cursomc.services.exception.DataIntegrityException;
 import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class ClientService {
@@ -32,9 +30,9 @@ public class ClientService {
 	@Autowired
 	private AddressRepository addressRepository;
 	
-//	@Autowired
-//	private BCryptPasswordEncoder pe;
-//
+	@Autowired
+	private BCryptPasswordEncoder pe;
+
 	@Autowired
 	private S3Service s3Service;
 	
@@ -95,7 +93,7 @@ public class ClientService {
 	}
 	
 	public Client fromDTO(ClientNewDTO objDTO) {
-		Client cli = new Client(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), ClientType.toEnum(objDTO.getTipo()), null);
+		Client cli = new Client(null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(), ClientType.toEnum(objDTO.getTipo()), pe.encode ( objDTO.getSenha () ));
 		Cidade cid = new Cidade(objDTO.getCidadeId(), null, null);
 		Endereco end = new Endereco (null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(), objDTO.getBairro(), objDTO.getCep(), cli, cid);
 		cli.getEnderecos().add(end);

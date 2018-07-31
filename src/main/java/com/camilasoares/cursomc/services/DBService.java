@@ -5,6 +5,7 @@ import com.camilasoares.cursomc.domain.enums.ClientType;
 import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
 import com.camilasoares.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -40,6 +41,9 @@ public class DBService {
 	
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
+
+	@Autowired
+	private BCryptPasswordEncoder pe;
 	
 
 	public void instatiateTestDatabase() throws ParseException{
@@ -102,17 +106,24 @@ public class DBService {
 		estadoRepository.save(Arrays.asList(est1, est2));
 		cidadeRepository.save(Arrays.asList(c1, c2, c3));
 
-		Client cli1 = new Client(null, "Maria Silva", "camila.soares@muchmore.digital", "36378912377", ClientType.PESSOAFISICA, null);
-
+		Client cli1 = new Client(null, "Maria Silva", "camila.soares@muchmore.digital", "36378912377", ClientType.PESSOAFISICA, pe.encode ( "123" ));
 		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+
+		Client cli2 = new Client ( null, "Camila Soares", "camilasoare1507@gmail.com", "08146639402", ClientType.PESSOAFISICA, pe.encode ( "12345" ) );
+
+
 
 		Endereco e1 = new Endereco (null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 		Endereco e2 = new Endereco (null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		Endereco e3 = new Endereco (null, "Rua rio apa", "60", "ap 800", "agua-fria", "52211370", cli1, c2);
+
 
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
 
-		clientRepository.save(Arrays.asList(cli1));
-		addressRepository.save(Arrays.asList(e1, e2));
+		cli2.getEnderecos ().addAll ( Arrays.asList ( e3 ) );
+
+		clientRepository.save(Arrays.asList(cli1, cli2));
+		addressRepository.save(Arrays.asList(e1, e2, e3));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
