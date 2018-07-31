@@ -1,20 +1,18 @@
 package com.camilasoares.cursomc.services.validation;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import com.camilasoares.cursomc.domain.Client;
+import com.camilasoares.cursomc.dto.ClientDTO;
+import com.camilasoares.cursomc.repositories.ClientRepository;
+import com.camilasoares.cursomc.resources.exception.FieldMessage;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.HandlerMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.HandlerMapping;
-
-import com.camilasoares.cursomc.domain.Client;
-import com.camilasoares.cursomc.dto.ClientDTO;
-import com.camilasoares.cursomc.repositories.ClientRepository;
-import com.camilasoares.cursomc.resouces.exception.handler.FieldMessage;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class ClientUpdateValidator implements ConstraintValidator<ClientUpdate, ClientDTO> {
 

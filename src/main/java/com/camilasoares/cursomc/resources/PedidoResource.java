@@ -1,40 +1,42 @@
-package com.camilasoares.cursomc.resouces;
+package com.camilasoares.cursomc.resources;
 
 
-
-import java.net.URI;
-
-import javax.validation.Valid;
 
 import com.camilasoares.cursomc.domain.Pedido;
 import com.camilasoares.cursomc.services.PedidoService;
 import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
 
 
 @RestController
-@RequestMapping(value="/pedidos")
+@RequestMapping("/pedidos")
 public class PedidoResource {
+
+	@Bean
+	public PedidoService pedidoService(){
+		return new PedidoService ();
+	}
 
 	@Autowired
 	private PedidoService pedidoService;
 
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@GetMapping("/{id}")
 	public ResponseEntity<Pedido> find(@PathVariable Integer id) throws ObjectNotFoundException {
 		Pedido obj = pedidoService.find ( id );
 		return ResponseEntity.ok().body(obj);
 	}
 
-	@RequestMapping(method=RequestMethod.POST)
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
 		obj = pedidoService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
@@ -42,7 +44,7 @@ public class PedidoResource {
 		return ResponseEntity.created(uri).build();
 	}
 
-	@RequestMapping(method=RequestMethod.GET)
+	@GetMapping
 	public ResponseEntity<Page<Pedido>> findPage(
 			@RequestParam(value="page", defaultValue="0") Integer page,
 			@RequestParam(value="linesPerPage", defaultValue="24") Integer linesPerPage,

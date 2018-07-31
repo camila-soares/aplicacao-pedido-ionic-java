@@ -2,18 +2,16 @@ package com.camilasoares.cursomc.services;
 
 
 
-import java.util.Date;
-
-import com.camilasoares.cursomc.repositories.*;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.camilasoares.cursomc.domain.ItemPedido;
 import com.camilasoares.cursomc.domain.PaymentBoleto;
 import com.camilasoares.cursomc.domain.Pedido;
 import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
-
+import com.camilasoares.cursomc.repositories.*;
 import javassist.tools.rmi.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+
+import java.util.Date;
 
 public class PedidoService {
 	
@@ -34,6 +32,9 @@ public class PedidoService {
 
 	@Autowired
 	private ClientRepository clientRepository;
+
+	@Autowired
+    private EmailService emailService;
 	
 	public Pedido find(Integer id) throws ObjectNotFoundException {
 		Pedido pedido = pedidoRepository.findOne ( id );
@@ -48,6 +49,7 @@ public class PedidoService {
 	public Pedido insert(Pedido obj){
 		obj.setId(1);
 		obj.setInstante(new Date());
+		obj.setClient ( clientRepository.findOne ( obj.getClient ().getId () ) );
 		obj.getPayment().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPayment().setPedido(obj);
 		if(obj.getPayment() instanceof PaymentBoleto){
@@ -58,11 +60,12 @@ public class PedidoService {
 		paymentRepository.save(obj.getPayment());
 		for(ItemPedido ip : obj.getItens()){
 			ip.setDesconto(0.0);
-			ip.setPreco(productRepository.findOne(ip.getProduct().getId()).getPreco());
+			ip.setProduct ( productRepository.findOne ( ip.getProduct ().getId () ) );
+			ip.setPreco(ip.getProduct ().getPreco ());
 			ip.setPedido(obj);
 		}
 		itemPedidoRepository.save(obj.getItens());
-		System.out.println ( obj );
+		emailService.sendOrderConfirmationEmail ( obj );
 		return obj;
 	}
 

@@ -1,13 +1,12 @@
 package com.camilasoares.cursomc.domain;
 
-import java.io.Serializable;
-import java.text.NumberFormat;
-import java.util.Locale;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 @Entity
 public class ItemPedido implements Serializable {
@@ -40,21 +39,12 @@ public class ItemPedido implements Serializable {
 	public double getSubTotal() {
 		return (preco - desconto) * quantidade;
 	}
-	
-//	public double getValorTotal(){
-//		double soma = 0.0;
-//		for(ItemPedido ip : itens){
-//			soma = soma + ip.getSubTotal();
-//		}
-//		return soma;
-//	}
-	
+
 	@JsonIgnore
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
-	
-	
+
 	public void setPedido(Pedido pedido) {
 		id.setPedido(pedido);
 	}

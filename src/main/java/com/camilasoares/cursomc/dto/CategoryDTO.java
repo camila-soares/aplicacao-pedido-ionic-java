@@ -1,11 +1,10 @@
 package com.camilasoares.cursomc.dto;
 
-import java.io.Serializable;
-
+import com.camilasoares.cursomc.domain.Category;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import com.camilasoares.cursomc.domain.Category;
+import java.io.Serializable;
 
 public class CategoryDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -18,6 +17,11 @@ public class CategoryDTO implements Serializable{
 	
 	public CategoryDTO(){}
 
+	public CategoryDTO(Category obj){
+		id = obj.getId();
+		nome = obj.getNome();
+	}
+
 	public Integer getId() {
 		return id;
 	}
@@ -28,9 +32,6 @@ public class CategoryDTO implements Serializable{
 
 	public void setNome(String nome) {	this.nome = nome;}
 	
-	public CategoryDTO(Category obj){
-		id = obj.getId();
-		nome = obj.getNome();
-	}
+
 
 }

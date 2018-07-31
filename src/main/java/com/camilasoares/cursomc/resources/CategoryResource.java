@@ -1,87 +1,86 @@
-package com.camilasoares.cursomc.resouces;
+package com.camilasoares.cursomc.resources;
 
 
-
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.camilasoares.cursomc.domain.Category;
 import com.camilasoares.cursomc.dto.CategoryDTO;
 import com.camilasoares.cursomc.services.CategoryService;
-
 import javassist.tools.rmi.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/categorias")
-public class CategoryResources {
-	
+@RequestMapping("/categorias")
+public class CategoryResource {
+	private final CategoryService categoryService;
+
 	@Autowired
-	private CategoryService service;
-	
-	@RequestMapping(value="/{id}",method=RequestMethod.GET)
+	public CategoryResource(CategoryService categoryService){
+		this.categoryService = categoryService;
+	}
+
+	@GetMapping("/{id}")
 	public ResponseEntity<Category> find(@PathVariable Integer id)  {
-		Category obj = service.find(id);
+		Category obj = categoryService.find(id);
 		return ResponseEntity.ok().body(obj);
 		
 	}
 
 
-	@RequestMapping(method=RequestMethod.POST)
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoryDTO objDTO){
-		Category obj = service.fromDTO(objDTO);
-		obj = service.insert(obj);
+		Category obj = categoryService.fromDTO(objDTO);
+		obj = categoryService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(obj.getId())
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+
+	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO objDTO, @PathVariable Integer id) throws ObjectNotFoundException{
-		Category obj = service.fromDTO(objDTO);
+		Category obj = categoryService.fromDTO(objDTO);
 		obj.setId(null);
-		obj = service.update(obj);
+		obj = categoryService.update(obj);
 		return ResponseEntity.noContent().build();
 		
 	}
 	
 
-	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
+	@DeleteMapping
+	@RequestMapping(value="/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
-		service.delete(id);
+		categoryService.delete(id);
 		return ResponseEntity.noContent().build();
 		
 	}
 	
-	@RequestMapping(method=RequestMethod.GET)
+	@GetMapping
 	public ResponseEntity<List<CategoryDTO>> findAll() throws ObjectNotFoundException {
-		List<Category> list = service.findAll();
+		List<Category> list = categoryService.findAll();
 		List<CategoryDTO> listDTO = list.stream().map(obj -> new CategoryDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 		
 	}
-	
-	@RequestMapping(value="/page", method=RequestMethod.GET)
+
+	@GetMapping
+	@RequestMapping(value="/page")
 	public ResponseEntity<Page<CategoryDTO>> findPage(
 			@RequestParam(value="page", defaultValue="0")  Integer page,
 			@RequestParam(value="linesForpage", defaultValue="24") Integer linesForpage,
 			@RequestParam(value="orderBy", defaultValue="nome")  String orderBy, 
 			@RequestParam(value="direction", defaultValue="ASC")  String direction) {
-		Page<Category> list = service.findPage(page, linesForpage, orderBy, direction);
+		Page<Category> list = categoryService.findPage(page, linesForpage, orderBy, direction);
 		Page<CategoryDTO> listDTO = list.map(obj -> new CategoryDTO(obj));
 		return ResponseEntity.ok().body(listDTO);
 		

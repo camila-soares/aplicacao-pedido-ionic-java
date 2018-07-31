@@ -1,33 +1,32 @@
-package com.camilasoares.cursomc.resouces;
-
-import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.validation.Valid;
-
-import com.camilasoares.cursomc.domain.Category;
-import com.camilasoares.cursomc.dto.CategoryDTO;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+package com.camilasoares.cursomc.resources;
 
 import com.camilasoares.cursomc.domain.Client;
 import com.camilasoares.cursomc.dto.ClientDTO;
 import com.camilasoares.cursomc.services.ClientService;
-
 import javassist.tools.rmi.ObjectNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value="/clientes")
-public class ClientResources {
+@RequestMapping("/clientes")
+public class ClientResource {
 	/*
 	 * Proteger contra serialização json ciclica
 	 */
-	
+	private final ClientService clientService;
+
 	@Autowired
-	private ClientService clientService;
+	public ClientResource(ClientService clientService){
+		this.clientService = clientService;
+	}
 
 	@GetMapping
 	public ResponseEntity<List<ClientDTO>> findAll() {
@@ -37,7 +36,7 @@ public class ClientResources {
 
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.GET)
+	@GetMapping("/{id}")
 	public ResponseEntity<Client> find(@PathVariable Integer id) {
 		Client cli = clientService.find(id);
 		return ResponseEntity.ok().body(cli);
@@ -45,7 +44,8 @@ public class ClientResources {
 	
 	
 	
-	@RequestMapping(method=RequestMethod.POST)
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClientDTO objDTO){
 		Client obj = clientService.fromDTO(objDTO);
 		obj = clientService.insert(obj);
@@ -55,7 +55,7 @@ public class ClientResources {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@RequestMapping(value="/{id}", method=RequestMethod.PUT)
+	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody ClientDTO objDTO, @PathVariable Integer id) throws ObjectNotFoundException{
 		Client obj = clientService.fromDTO(objDTO);
 		obj.setId(null);
@@ -65,7 +65,7 @@ public class ClientResources {
 	}
 	
 
-	@RequestMapping(value="/{id}",method=RequestMethod.DELETE)
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
 		clientService.delete(id);
 		return ResponseEntity.noContent().build();
