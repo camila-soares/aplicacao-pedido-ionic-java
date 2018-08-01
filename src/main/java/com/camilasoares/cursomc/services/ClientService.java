@@ -4,10 +4,13 @@ import com.camilasoares.cursomc.domain.Cidade;
 import com.camilasoares.cursomc.domain.Client;
 import com.camilasoares.cursomc.domain.Endereco;
 import com.camilasoares.cursomc.domain.enums.ClientType;
+import com.camilasoares.cursomc.domain.enums.Perfil;
 import com.camilasoares.cursomc.dto.ClientDTO;
 import com.camilasoares.cursomc.dto.ClientNewDTO;
 import com.camilasoares.cursomc.repositories.AddressRepository;
 import com.camilasoares.cursomc.repositories.ClientRepository;
+import com.camilasoares.cursomc.security.UserSS;
+import com.camilasoares.cursomc.services.exception.AuthorizationException;
 import com.camilasoares.cursomc.services.exception.DataIntegrityException;
 import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +42,12 @@ public class ClientService {
 	
 	
 	public Client find(Integer id) {
+
+		UserSS user = UserService.authenticatedd ();
+		if(user==null || !user.hasRole ( Perfil.ADMIN ) && !id.equals ( user.getId () )){
+			throw new AuthorizationException ("Acesso Negado");
+		}
+
 		Client obj = clientRepository.findOne(id);
 		if(obj == null) {
 			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
@@ -106,7 +115,17 @@ public class ClientService {
 		}
 		return cli;
 	}
-	
-	
-	
+
+
+    public Client findByEmail(String email) {
+		UserSS user = UserService.authenticatedd ();
+		if(user == null || !user.hasRole (Perfil.ADMIN) && !email.equals(user.getUsername ())){
+			throw new AuthorizationException ( "Acesso negado" );
+		}
+		Client obj = clientRepository.findByEmail ( email );
+		if(obj == null){
+			throw new ObjectNotFoundException ( "Objeto não encontrado! Id"+ user.getId () + ", Tipo: " + Client.class.getName () );
+		}
+		return obj;
+	}
 }

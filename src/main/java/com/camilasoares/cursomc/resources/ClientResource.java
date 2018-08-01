@@ -42,7 +42,11 @@ public class ClientResource {
 		return ResponseEntity.ok().body(cli);
 	}
 	
-	
+//	@GetMapping
+//	public ResponseEntity<Client> findByEmail(@PathVariable String email){
+//		Client obj = clientService.findByEmail(email);
+//		return ResponseEntity.ok().body ( obj );
+//	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -61,9 +65,8 @@ public class ClientResource {
 		obj.setId(null);
 		obj = clientService.update(obj);
 		return ResponseEntity.noContent().build();
-		
 	}
-	
+
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {

@@ -3,6 +3,7 @@ package com.camilasoares.cursomc.services;
 import com.camilasoares.cursomc.domain.*;
 import com.camilasoares.cursomc.domain.enums.ClientType;
 import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
+import com.camilasoares.cursomc.domain.enums.Perfil;
 import com.camilasoares.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -95,10 +96,12 @@ public class DBService {
 
 		Estado est1 = new Estado(null, "Minas Gerais", null);
 		Estado est2 = new Estado(null, "São Paulo", null);
+		Estado est3 = new Estado ( null, "Pernambuco", null );
 
 		Cidade c1 = new Cidade(null, "Uberlândia", est1);
 		Cidade c2 = new Cidade(null, "São Paulo", est2);
 		Cidade c3 = new Cidade(null, "Campinas", est2);
+		Cidade c4 = new Cidade ( null, "Recife",  est3);
 
 		est1.getCidades().addAll(Arrays.asList(c1));
 		est2.getCidades().addAll(Arrays.asList(c2, c3));
@@ -106,16 +109,17 @@ public class DBService {
 		estadoRepository.save(Arrays.asList(est1, est2));
 		cidadeRepository.save(Arrays.asList(c1, c2, c3));
 
-		Client cli1 = new Client(null, "Maria Silva", "camila.soares@muchmore.digital", "36378912377", ClientType.PESSOAFISICA, pe.encode ( "123" ));
+		Client cli1 = new Client(null, "Maria Silva", "camila@gmail.com", "36378912377", ClientType.PESSOAFISICA, pe.encode ( "123" ));
 		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
 
-		Client cli2 = new Client ( null, "Camila Soares", "camilasoare1507@gmail.com", "08146639402", ClientType.PESSOAFISICA, pe.encode ( "12345" ) );
-
+		Client cli2 = new Client ( null, "Camila Soares", "camilasoare1507@gmail.com", "08146639402", ClientType.PESSOAJURIDICA, pe.encode ( "123" ) );
+        cli2.getTelefones ().addAll ( Arrays.asList ( "995346681", "85614242" ) );
+		cli2.addPerfil ( Perfil.ADMIN );
 
 
 		Endereco e1 = new Endereco (null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
 		Endereco e2 = new Endereco (null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
-		Endereco e3 = new Endereco (null, "Rua rio apa", "60", "ap 800", "agua-fria", "52211370", cli1, c2);
+		Endereco e3 = new Endereco (null, "Rua rio apa", "60", "ap 800", "agua-fria", "52211370", cli2, c3);
 
 
 		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
@@ -123,7 +127,7 @@ public class DBService {
 		cli2.getEnderecos ().addAll ( Arrays.asList ( e3 ) );
 
 		clientRepository.save(Arrays.asList(cli1, cli2));
-		addressRepository.save(Arrays.asList(e1, e2, e3));
+		addressRepository.save(Arrays.asList(e1, e2));
 
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
 
