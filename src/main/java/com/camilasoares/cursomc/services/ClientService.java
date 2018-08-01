@@ -91,8 +91,8 @@ public class ClientService {
 		return clientRepository.findAll();
 	}
 	
-	public Page<Client> findPage(Integer page,Integer linesForpage, String orderBy, String direction){
-		PageRequest pageRequest = new PageRequest(page, linesForpage, Direction.valueOf(direction), orderBy);
+	public Page<Client> findPage(Integer page, String linesForpage, String orderBy, String direction){
+		PageRequest pageRequest = new PageRequest(page, Integer.parseInt ( linesForpage ) , Direction.valueOf(direction), orderBy);
 		return clientRepository.findAll(pageRequest);
 	}
 	

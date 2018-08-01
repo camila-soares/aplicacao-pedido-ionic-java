@@ -7,6 +7,7 @@ import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -28,6 +29,7 @@ public class ClientResource {
 		this.clientService = clientService;
 	}
 
+	@PreAuthorize ( "hasAnyRole('ADMIN')" )
 	@GetMapping
 	public ResponseEntity<List<ClientDTO>> findAll() {
 		List<Client> list = clientService.findAll();
@@ -58,7 +60,8 @@ public class ClientResource {
 				.toUri();
 		return ResponseEntity.created(uri).build();
 	}
-	
+
+
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody ClientDTO objDTO, @PathVariable Integer id) throws ObjectNotFoundException{
 		Client obj = clientService.fromDTO(objDTO);
@@ -67,13 +70,25 @@ public class ClientResource {
 		return ResponseEntity.noContent().build();
 	}
 
-
+	@PreAuthorize ( "hasAnyRole('ADMIN')" )
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
 		clientService.delete(id);
 		return ResponseEntity.noContent().build();
 		
 	}
+//    @PreAuthorize ( "hasAnyRole('ADMIN')" )
+//	@GetMapping
+//	public ResponseEntity<Page<ClientDTO>> findPage(
+//			@RequestParam(value = "page", defaultValue = "0") Integer page,
+//			@RequestParam(value = "linesPerPage" , defaultValue = "24") String linesPerPage,
+//			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
+//			@RequestParam(value = "direction", defaultValue = "ASC") String direction){
+//		Page<Client> list = clientService.findPage ( page, linesPerPage, orderBy, direction );
+//		Page<ClientDTO> listDTO = list.map ( obj -> new ClientDTO ( obj ) );
+//		return ResponseEntity.ok ().body ( listDTO );
+//	 }
+
 	
 
 }

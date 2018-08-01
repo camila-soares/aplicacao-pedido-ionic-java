@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -35,7 +36,7 @@ public class CategoryResource {
 		
 	}
 
-
+	@PreAuthorize ( "hasAnyRole('ADMIN')" )
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoryDTO objDTO){
@@ -47,6 +48,7 @@ public class CategoryResource {
 		return ResponseEntity.created(uri).build();
 	}
 
+	@PreAuthorize ( "hasAnyRole('ADMIN')" )
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO objDTO, @PathVariable Integer id) throws ObjectNotFoundException{
 		Category obj = categoryService.fromDTO(objDTO);
@@ -55,10 +57,9 @@ public class CategoryResource {
 		return ResponseEntity.noContent().build();
 		
 	}
-	
 
-	@DeleteMapping
-	@RequestMapping(value="/{id}")
+	@PreAuthorize ( "hasAnyRole('ADMIN')" )
+	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
 		categoryService.delete(id);
 		return ResponseEntity.noContent().build();
