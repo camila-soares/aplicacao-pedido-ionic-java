@@ -81,7 +81,7 @@ public class ClientResource {
 //	@GetMapping
 //	public ResponseEntity<Page<ClientDTO>> findPage(
 //			@RequestParam(value = "page", defaultValue = "0") Integer page,
-//			@RequestParam(value = "linesPerPage" , defaultValue = "24") String linesPerPage,
+//			@RequestParam(value = "linesPerPage" , defaultValue = "24") Integer linesPerPage,
 //			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
 //			@RequestParam(value = "direction", defaultValue = "ASC") String direction){
 //		Page<Client> list = clientService.findPage ( page, linesPerPage, orderBy, direction );

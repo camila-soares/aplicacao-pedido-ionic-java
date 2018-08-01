@@ -1,5 +1,6 @@
 package com.camilasoares.cursomc.resources.exception;
 
+import com.camilasoares.cursomc.services.exception.AuthorizationException;
 import com.camilasoares.cursomc.services.exception.DataIntegrityException;
 import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -39,4 +40,11 @@ public class ResourceExceptionHandler {
         }
         return ResponseEntity.status ( HttpStatus.UNPROCESSABLE_ENTITY).body ( err );
 	}
+	@ExceptionHandler(AuthorizationException.class)
+	public ResponseEntity<StandardError> authorization(AuthorizationException e, HttpServletRequest request) {
+
+		StandardError err = new StandardError(System.currentTimeMillis(), HttpStatus.FORBIDDEN.value(), "Acesso negado", e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
+	}
+
 }

@@ -43,7 +43,7 @@ public class ClientService {
 	
 	public Client find(Integer id) {
 
-		UserSS user = UserService.authenticatedd ();
+		UserSS user = UserService.authenticated ();
 		if(user==null || !user.hasRole ( Perfil.ADMIN ) && !id.equals ( user.getId () )){
 			throw new AuthorizationException ("Acesso Negado");
 		}
@@ -90,12 +90,13 @@ public class ClientService {
 	public List<Client> findAll() {
 		return clientRepository.findAll();
 	}
-	
-	public Page<Client> findPage(Integer page, String linesForpage, String orderBy, String direction){
-		PageRequest pageRequest = new PageRequest(page, Integer.parseInt ( linesForpage ) , Direction.valueOf(direction), orderBy);
+
+
+	public Page<Client> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = new PageRequest (page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return clientRepository.findAll(pageRequest);
 	}
-	
+
 	public Client fromDTO(ClientDTO objDTO) {
 		return new Client(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
 		
@@ -118,7 +119,7 @@ public class ClientService {
 
 
     public Client findByEmail(String email) {
-		UserSS user = UserService.authenticatedd ();
+		UserSS user = UserService.authenticated ();
 		if(user == null || !user.hasRole (Perfil.ADMIN) && !email.equals(user.getUsername ())){
 			throw new AuthorizationException ( "Acesso negado" );
 		}
