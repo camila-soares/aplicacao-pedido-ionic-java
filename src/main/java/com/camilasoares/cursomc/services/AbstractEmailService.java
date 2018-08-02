@@ -30,7 +30,7 @@ public abstract class AbstractEmailService implements EmailService {
     }
 
 
-    public void sendNewPassEmail(Client client, String newPass){
+    public void sendNewPasswordEmail(Client client, String newPass){
         SimpleMailMessage sm = prepareNewPasswordEmail ( client , newPass);
         sendEmail ( sm );
     }
@@ -44,4 +44,5 @@ public abstract class AbstractEmailService implements EmailService {
         sm.setText("Nova senha: " + newPass);
         return sm;
     }
+
 }
