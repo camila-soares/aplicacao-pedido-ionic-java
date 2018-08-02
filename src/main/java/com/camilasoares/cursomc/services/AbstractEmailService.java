@@ -29,7 +29,7 @@ public abstract class AbstractEmailService implements EmailService {
         return sm;
     }
 
-
+    @Override
     public void sendNewPasswordEmail(Client client, String newPass){
         SimpleMailMessage sm = prepareNewPasswordEmail ( client , newPass);
         sendEmail ( sm );
