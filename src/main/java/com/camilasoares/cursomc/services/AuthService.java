@@ -24,11 +24,12 @@ public class AuthService {
     private Random rand = new Random ();
 
     public void sendNewPassword(String email) {
+
         Client client = clientRepository.findByEmail ( email );
         if (client == null) {
             throw new ObjectNotFoundException ( "Email não encontrado " );
         }
-
+        System.out.println ( "email enviado" );
         String newPass = newPassword ();
         client.setSenha ( bCryptPasswordEncoder.encode ( newPass ) );
 
