@@ -4,6 +4,7 @@ import com.camilasoares.cursomc.domain.Client;
 import com.camilasoares.cursomc.repositories.ClientRepository;
 import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
