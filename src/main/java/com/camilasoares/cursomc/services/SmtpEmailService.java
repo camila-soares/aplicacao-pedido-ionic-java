@@ -19,13 +19,14 @@ public class SmtpEmailService extends AbstractEmailService {
         return new MailSender () {
             @Override
             public void send(SimpleMailMessage simpleMailMessage) throws MailException {
-                
+
             }
 
             @Override
             public void send(SimpleMailMessage... simpleMailMessages) throws MailException {
 
             }
+
         };
     }
 
