@@ -1,19 +1,17 @@
 package com.camilasoares.cursomc.services.validation;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.camilasoares.cursomc.domain.Client;
 import com.camilasoares.cursomc.domain.enums.ClientType;
 import com.camilasoares.cursomc.dto.ClientNewDTO;
 import com.camilasoares.cursomc.repositories.ClientRepository;
-import com.camilasoares.cursomc.resouces.exception.handler.FieldMessage;
+import com.camilasoares.cursomc.resources.exception.FieldMessage;
 import com.camilasoares.cursomc.services.validation.ultils.BR;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClientInsertValidator implements ConstraintValidator<ClientInsert, ClientNewDTO>{
 

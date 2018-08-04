@@ -1,24 +1,23 @@
 package com.camilasoares.cursomc.services;
 
-import java.util.List;
-
+import com.camilasoares.cursomc.domain.Category;
+import com.camilasoares.cursomc.domain.Pedido;
+import com.camilasoares.cursomc.domain.Product;
+import com.camilasoares.cursomc.repositories.CategoryRepository;
+import com.camilasoares.cursomc.repositories.ProductRepository;
+import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
-import com.camilasoares.cursomc.domain.Category;
-import com.camilasoares.cursomc.domain.Pedido;
-import com.camilasoares.cursomc.domain.Product;
-import com.camilasoares.cursomc.repositories.CategoryRepository;
-import com.camilasoares.cursomc.repositories.ProductRepository;
-
-import javassist.tools.rmi.ObjectNotFoundException;
+import java.util.List;
 
 @Service
 public class ProductService {
-	
+
+
 	@Autowired
 	private ProductRepository productRepository;
 	
@@ -40,6 +39,7 @@ public class ProductService {
 		List<Category> categorias = categoryRepository.findAll(ids);
 		return productRepository.findDistinctByNomeContainingAndCategoriasIn(nome, categorias, pageRequest);
 	}
+
 	
 
 }

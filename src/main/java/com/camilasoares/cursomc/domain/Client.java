@@ -1,26 +1,16 @@
 package com.camilasoares.cursomc.domain;
 
+import com.camilasoares.cursomc.domain.enums.ClientType;
+import com.camilasoares.cursomc.domain.enums.Perfil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.camilasoares.cursomc.domain.enums.ClientType;
-import com.camilasoares.cursomc.domain.enums.Perfil;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity
@@ -40,16 +30,18 @@ public class Client implements Serializable {
 	@JsonIgnore
 	private String senha;
 
+
 	@OneToMany(mappedBy="client", cascade=CascadeType.ALL)
 	private List<Endereco> enderecos = new ArrayList<>();
 
 	@ElementCollection
-	@CollectionTable(name="telefone")
+	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 
 	@ElementCollection(fetch=FetchType.EAGER)
-	@CollectionTable(name="perfis")
+	@CollectionTable(name="PERFIS")
 	private Set<Integer> perfis = new HashSet<>();
+
 
 	@JsonIgnore
 	@OneToMany(mappedBy="client")

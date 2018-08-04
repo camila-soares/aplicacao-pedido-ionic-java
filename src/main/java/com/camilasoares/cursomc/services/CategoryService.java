@@ -2,21 +2,19 @@ package com.camilasoares.cursomc.services;
 
 
 
-import java.util.List;
-
+import com.camilasoares.cursomc.domain.Category;
+import com.camilasoares.cursomc.dto.CategoryDTO;
+import com.camilasoares.cursomc.repositories.CategoryRepository;
+import com.camilasoares.cursomc.services.exception.DataIntegrityException;
+import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.camilasoares.cursomc.domain.Category;
-import com.camilasoares.cursomc.dto.CategoryDTO;
-import com.camilasoares.cursomc.repositories.CategoryRepository;
-import com.camilasoares.cursomc.services.exception.DataIntegrityException;
-import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
+import java.util.List;
 
 
 
@@ -24,10 +22,11 @@ import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
 public class CategoryService {
 
 	@Autowired
-	private CategoryRepository repo;
+	private  CategoryRepository categoryRepository;
+
 
 	public Category find(Integer id) throws ObjectNotFoundException{
-		Category obj = repo.findOne(id);
+		Category obj = categoryRepository.findOne(id);
 		if(obj == null) {
 			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
 					+ ", Tipo: " + Category.class.getName());
@@ -38,13 +37,13 @@ public class CategoryService {
 	
 	public Category insert(Category obj) {
 		obj.setId(null);
-		return repo.save(obj);
+		return categoryRepository.save(obj);
 	}
 
 	public Category update(Category obj) throws ObjectNotFoundException {
 		Category newObj  = find(obj.getId());
 		updateData(newObj, obj);
-		return repo.save(newObj);
+		return categoryRepository.save(newObj);
 	}
 
 	private void updateData(Category newObj, Category obj) {
@@ -55,7 +54,7 @@ public class CategoryService {
 	public void delete(Integer id) throws ObjectNotFoundException {
 		find(id);
 		try{
-			repo.delete(id);
+			categoryRepository.delete(id);
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel uma Categoria que possiu produto");
@@ -64,12 +63,12 @@ public class CategoryService {
 	}
 
 	public List<Category> findAll() {
-		return repo.findAll();
+		return categoryRepository.findAll();
 	}
 
 	public Page<Category> findPage(Integer page,Integer linesForpage, String orderBy, String direction){
 		PageRequest pageRequest = new PageRequest(page, linesForpage, Direction.valueOf(direction), orderBy);
-		return repo.findAll(pageRequest);
+		return categoryRepository.findAll(pageRequest);
 	}
 
 	public Category fromDTO(CategoryDTO objDTO) {

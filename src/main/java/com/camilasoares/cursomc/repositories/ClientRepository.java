@@ -1,11 +1,10 @@
 package com.camilasoares.cursomc.repositories;
 
 
-import javax.transaction.Transactional;
-
+import com.camilasoares.cursomc.domain.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.camilasoares.cursomc.domain.Client;
+import javax.transaction.Transactional;
 
 public interface ClientRepository extends JpaRepository<Client, Integer>{
 
