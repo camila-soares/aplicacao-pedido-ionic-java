@@ -14,21 +14,21 @@ public class SmtpEmailService extends AbstractEmailService {
     @Autowired
     private MailSender mailSender;
 
-    @Bean
-    public MailSender mailSender() {
-        return new MailSender () {
-            @Override
-            public void send(SimpleMailMessage simpleMailMessage) throws MailException {
-
-            }
-
-            @Override
-            public void send(SimpleMailMessage... simpleMailMessages) throws MailException {
-
-            }
-
-        };
-    }
+//    @Bean
+//    public MailSender mailSender() {
+//        return new MailSender () {
+//            @Override
+//            public void send(SimpleMailMessage simpleMailMessage) throws MailException {
+//
+//            }
+//
+//            @Override
+//            public void send(SimpleMailMessage... simpleMailMessages) throws MailException {
+//
+//            }
+//
+//        };
+//    }
 
 
     private static final Logger LOG = LoggerFactory.getLogger ( SmtpEmailService.class );
