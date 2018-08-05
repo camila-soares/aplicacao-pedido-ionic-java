@@ -14,10 +14,10 @@ public class SmtpEmailService extends AbstractEmailService {
     @Autowired
     private MailSender mailSender;
 
-//    @Bean
-//    public MailSender mailSender(){
-//        return mailSender();
-//    }
+    @Bean
+    public EmailService emailService() {
+        return new SmtpEmailService();
+    }
 
     private static final Logger LOG = LoggerFactory.getLogger ( SmtpEmailService.class );
 
