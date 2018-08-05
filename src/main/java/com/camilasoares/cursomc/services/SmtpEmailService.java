@@ -11,25 +11,13 @@ import org.springframework.mail.SimpleMailMessage;
 
 public class SmtpEmailService extends AbstractEmailService {
 
-    @Autowired
-    private MailSender mailSender;
+   // @Autowired
+    //private MailSender mailSender;
 
     @Bean
-    public MailSender mailSender() {
-        return new MailSender () {
-            @Override
-            public void send(SimpleMailMessage simpleMailMessage) throws MailException {
-
-            }
-
-            @Override
-            public void send(SimpleMailMessage... simpleMailMessages) throws MailException {
-
-            }
-
-        };
+    public MailSender mailSender(){
+        return mailSender();
     }
-
 
     private static final Logger LOG = LoggerFactory.getLogger ( SmtpEmailService.class );
 
