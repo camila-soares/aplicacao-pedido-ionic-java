@@ -11,8 +11,8 @@ import org.springframework.mail.SimpleMailMessage;
 
 public class SmtpEmailService extends AbstractEmailService {
 
-   // @Autowired
-    //private MailSender mailSender;
+    @Autowired
+    private MailSender mailSender;
 
     @Bean
     public MailSender mailSender(){
