@@ -21,10 +21,10 @@ import java.net.URI;
 @RequestMapping("/pedidos")
 public class PedidoResource {
 
-	@Bean
-	public PedidoService pedidoService(){
-		return new PedidoService ();
-	}
+//	@Bean
+//	public PedidoService pedidoService(){
+//		return new PedidoService ();
+//	}
 
 	@Autowired
 	private PedidoService pedidoService;
