@@ -2,9 +2,11 @@ package com.camilasoares.cursomc.resources;
 
 import com.camilasoares.cursomc.domain.Client;
 import com.camilasoares.cursomc.dto.ClientDTO;
+import com.camilasoares.cursomc.dto.ClientNewDTO;
 import com.camilasoares.cursomc.services.ClientService;
 import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,15 +46,15 @@ public class ClientResource {
 		return ResponseEntity.ok().body(cli);
 	}
 	
-//	@GetMapping
-//	public ResponseEntity<Client> findByEmail(@PathVariable String email){
-//		Client obj = clientService.findByEmail(email);
-//		return ResponseEntity.ok().body ( obj );
-//	}
+	@GetMapping("/email")
+	public ResponseEntity<Client> findByEmail(@RequestParam(value="value") String email){
+		Client obj = clientService.findByEMail(email);
+		return ResponseEntity.ok().body ( obj );
+	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Void> insert(@Valid @RequestBody ClientDTO objDTO){
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClientNewDTO objDTO){
 		Client obj = clientService.fromDTO(objDTO);
 		obj = clientService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -65,7 +67,7 @@ public class ClientResource {
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody ClientDTO objDTO, @PathVariable Integer id) throws ObjectNotFoundException{
 		Client obj = clientService.fromDTO(objDTO);
-		obj.setId(null);
+		obj.setId(id);
 		obj = clientService.update(obj);
 		return ResponseEntity.noContent().build();
 	}
@@ -77,18 +79,15 @@ public class ClientResource {
 		return ResponseEntity.noContent().build();
 		
 	}
-//    @PreAuthorize ( "hasAnyRole('ADMIN')" )
-//	@GetMapping
-//	public ResponseEntity<Page<ClientDTO>> findPage(
-//			@RequestParam(value = "page", defaultValue = "0") Integer page,
-//			@RequestParam(value = "linesPerPage" , defaultValue = "24") Integer linesPerPage,
-//			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
-//			@RequestParam(value = "direction", defaultValue = "ASC") String direction){
-//		Page<Client> list = clientService.findPage ( page, linesPerPage, orderBy, direction );
-//		Page<ClientDTO> listDTO = list.map ( obj -> new ClientDTO ( obj ) );
-//		return ResponseEntity.ok ().body ( listDTO );
-//	 }
-
-	
-
+    @PreAuthorize ( "hasAnyRole('ADMIN')" )
+	@GetMapping("/page")
+	public ResponseEntity<Page<ClientDTO>> findPage(
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "linesPerPage" , defaultValue = "24") Integer linesPerPage,
+			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy,
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction){
+		Page<Client> list = clientService.findPage ( page, linesPerPage, orderBy, direction );
+		Page<ClientDTO> listDTO = list.map ( obj -> new ClientDTO ( obj ) );
+		return ResponseEntity.ok ().body ( listDTO );
+	 }
 }
