@@ -38,7 +38,7 @@ public class PedidoResource {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Void> insert(@Valid @RequestBody Pedido obj) {
-		obj = pedidoService.insert(obj);
+		obj = pedidoService.insert (obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();

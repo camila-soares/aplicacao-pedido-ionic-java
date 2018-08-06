@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -48,19 +49,17 @@ public class ClientService {
 			throw new AuthorizationException ("Acesso Negado");
 		}
 
-		Client obj = clientRepository.findOne(id);
-		if(obj == null) {
-			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
-					+ ", Tipo: " + Client.class.getName());
-		}
-		return obj;
+		Optional<Client> obj = clientRepository.findById (id);
+		return obj.orElseThrow ( () -> new ObjectNotFoundException (
+				"Objeto não encontrado! id:" + id + ", Tipo:"+ Client.class.getName ()
+		) );
 	}
 
 	@Transactional
 	public  Client insert(Client obj) {
 		obj.setId(null);
 		obj = clientRepository.save(obj);
-		addressRepository.save(obj.getEnderecos());
+		addressRepository.saveAll (obj.getEnderecos());
 		return obj;
 	}
 
@@ -79,7 +78,7 @@ public class ClientService {
 	public void delete(Integer id) throws ObjectNotFoundException {
 		find(id);
 		try{
-		clientRepository.delete(id);
+		clientRepository.deleteById (id);
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir  Cliente o mesmo possui pedidos");
@@ -93,8 +92,23 @@ public class ClientService {
 
 
 	public Page<Client> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = new PageRequest (page, linesPerPage, Direction.valueOf(direction), orderBy);
+		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return clientRepository.findAll(pageRequest);
+	}
+
+	public Client findByEMail(String email){
+		UserSS user = UserService.authenticated ();
+		if(user == null || !user.hasRole ( Perfil.ADMIN ) && !email.equals ( user.getPassword () )){
+			throw new AuthorizationException ( "Acesso negado" );
+		}
+
+		Client obj = clientRepository.findByEmail ( email );
+		if(obj == null ){
+			throw new ObjectNotFoundException (
+					"Objeto não encontrado! Id:" + user.getId () + ", Tipo:" + Client.class.getName ()
+			);
+		}
+		return obj;
 	}
 
 	public Client fromDTO(ClientDTO objDTO) {
@@ -118,15 +132,5 @@ public class ClientService {
 	}
 
 
-    public Client findByEmail(String email) {
-		UserSS user = UserService.authenticated ();
-		if(user == null || !user.hasRole (Perfil.ADMIN) && !email.equals(user.getUsername ())){
-			throw new AuthorizationException ( "Acesso negado" );
-		}
-		Client obj = clientRepository.findByEmail ( email );
-		if(obj == null){
-			throw new ObjectNotFoundException ( "Objeto não encontrado! Id"+ user.getId () + ", Tipo: " + Client.class.getName () );
-		}
-		return obj;
-	}
+
 }

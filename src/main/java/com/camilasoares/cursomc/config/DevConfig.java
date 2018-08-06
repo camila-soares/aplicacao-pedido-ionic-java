@@ -18,7 +18,7 @@ public class DevConfig {
 	@Autowired
 	private DBService dbService;
 	
-	@Value ("create")
+	@Value ("${spring.jpa.hibernate.ddl-auto}")
 	private String strategy;
 
 	@Bean
@@ -32,7 +32,8 @@ public class DevConfig {
 	}
 
 	@Bean
-	public EmailService emailService(){
+	public EmailService emailService()
+	{
 		return new SmtpEmailService ();
 	}
 
