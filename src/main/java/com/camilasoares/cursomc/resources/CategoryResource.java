@@ -36,7 +36,7 @@ public class CategoryResource {
 		
 	}
 
-	@PreAuthorize( "hasAnyRole('ADMIN')" )
+	//@PreAuthorize( "hasAnyRole('ADMIN')" )
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoryDTO objDTO){

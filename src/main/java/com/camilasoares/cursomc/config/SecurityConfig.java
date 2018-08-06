@@ -40,6 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     /*Definindo os acesso de acordo com as permissões*/
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**"
+
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
