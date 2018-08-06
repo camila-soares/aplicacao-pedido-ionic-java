@@ -1,7 +1,6 @@
 package com.camilasoares.cursomc.services;
 
 import com.camilasoares.cursomc.domain.Category;
-import com.camilasoares.cursomc.domain.Pedido;
 import com.camilasoares.cursomc.domain.Product;
 import com.camilasoares.cursomc.repositories.CategoryRepository;
 import com.camilasoares.cursomc.repositories.ProductRepository;
@@ -23,13 +22,13 @@ public class ProductService {
 	
 	@Autowired
 	private CategoryRepository categoryRepository;
-	
+
 
 	public Product find(Integer id) throws ObjectNotFoundException {
 		Product product = productRepository.findOne(id);
 		if(product == null) {
 			throw new ObjectNotFoundException("Pedido não encontrado! Id: " + id
-					+ ", Tipo: " + Pedido.class.getName());
+					+ ", Tipo: " + Product.class.getName());
 		}
 		return product;
 	}
