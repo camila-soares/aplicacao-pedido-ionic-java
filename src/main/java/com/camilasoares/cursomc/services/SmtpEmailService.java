@@ -20,5 +20,5 @@ public class SmtpEmailService extends AbstractEmailService {
         LOG.info ( "Email enviado" );
     }
 
-    
+
 }
