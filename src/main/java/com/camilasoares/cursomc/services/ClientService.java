@@ -12,7 +12,6 @@ import com.camilasoares.cursomc.repositories.ClientRepository;
 import com.camilasoares.cursomc.security.UserSS;
 import com.camilasoares.cursomc.services.exception.AuthorizationException;
 import com.camilasoares.cursomc.services.exception.DataIntegrityException;
-import com.camilasoares.cursomc.services.exception.FileException;
 import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -51,6 +50,10 @@ public class ClientService {
 
 	@Value ( "${img.prefix.client.profile}" )
 	private String prefix;
+
+	@Value ("${img.profile.size}")
+	private Integer size;
+
 	
 	public Client find(Integer id) {
 
@@ -148,6 +151,8 @@ public class ClientService {
 		}
 
 		BufferedImage jpgImage = imageService.getJpgImageFromFile ( multipartFile );
+		jpgImage = imageService.cropSquare ( jpgImage );
+		jpgImage = imageService.resize (jpgImage, size );
 		String fileName = prefix + user.getId () + ".jpg";
 
 		return s3Service.uploadFile ( imageService.getInputStream ( jpgImage, "jpg"), fileName, "image" );

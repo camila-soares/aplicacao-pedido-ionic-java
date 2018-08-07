@@ -22,11 +22,7 @@ public class AuthService {
     @Autowired
     private EmailService emailService;
 
-    @Bean
-    public EmailService emailService() {
-        return new SmtpEmailService();
-    }
-
+    
     private Random rand = new Random ();
 
     public void sendNewPassword(String email) {
