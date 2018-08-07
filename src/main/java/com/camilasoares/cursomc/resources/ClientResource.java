@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.annotation.processing.FilerException;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
@@ -95,7 +96,7 @@ public class ClientResource {
 
 	@PostMapping("/picture")
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file){
+	public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) throws FilerException {
 		URI uri = clientService.uploadProfilePicture ( file );
 		return ResponseEntity.created(uri).build();
 	}
