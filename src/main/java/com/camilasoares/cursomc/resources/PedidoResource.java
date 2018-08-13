@@ -4,9 +4,7 @@ package com.camilasoares.cursomc.resources;
 
 import com.camilasoares.cursomc.domain.Pedido;
 import com.camilasoares.cursomc.services.PedidoService;
-import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +28,7 @@ public class PedidoResource {
 	private PedidoService pedidoService;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Pedido> find(@PathVariable Integer id) throws ObjectNotFoundException {
+	public ResponseEntity<Pedido> find(@PathVariable Integer id) {
 		Pedido obj = pedidoService.find ( id );
 		return ResponseEntity.ok().body(obj);
 	}
