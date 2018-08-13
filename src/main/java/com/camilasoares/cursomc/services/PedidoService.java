@@ -12,6 +12,7 @@ import com.camilasoares.cursomc.security.UserSS;
 import com.camilasoares.cursomc.services.exception.AuthorizationException;
 import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -45,6 +46,11 @@ public class PedidoService {
 
 	@Autowired
     private EmailService emailService;
+
+	@Bean
+	public EmailService emailService(){
+		return new SmtpEmailService ();
+	}
 	
 	public Pedido find(Integer id) throws ObjectNotFoundException {
 		Optional<Pedido> pedido = pedidoRepository.findById ( id );
