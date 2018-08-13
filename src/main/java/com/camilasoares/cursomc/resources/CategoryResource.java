@@ -48,11 +48,11 @@ public class CategoryResource {
 		return ResponseEntity.created(uri).build();
 	}
 
-	@PreAuthorize ( "hasAnyRole('ADMIN')" )
+	//@PreAuthorize ( "hasAnyRole('ADMIN')" )
 	@PutMapping("/{id}")
-	public ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO objDTO, @PathVariable Integer id) throws ObjectNotFoundException{
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO objDTO, @PathVariable Integer id){
 		Category obj = categoryService.fromDTO(objDTO);
-		obj.setId(null);
+		obj.setId(id);
 		obj = categoryService.update(obj);
 		return ResponseEntity.noContent().build();
 		
