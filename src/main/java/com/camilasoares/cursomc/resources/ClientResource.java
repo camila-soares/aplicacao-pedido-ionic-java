@@ -48,11 +48,7 @@ public class ClientResource {
 		return ResponseEntity.ok().body(cli);
 	}
 	
-	@GetMapping("/email")
-	public ResponseEntity<Client> findByEmail(@RequestParam(value="value") String email){
-		Client obj = clientService.findByEMail(email);
-		return ResponseEntity.ok().body ( obj );
-	}
+
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
@@ -72,6 +68,12 @@ public class ClientResource {
 		obj.setId(id);
 		obj = clientService.update(obj);
 		return ResponseEntity.noContent().build();
+	}
+
+	@GetMapping("/email")
+	public ResponseEntity<Client> findByEmail(@RequestParam(value="value") String email){
+		Client obj = clientService.findByEMail(email);
+		return ResponseEntity.ok().body ( obj );
 	}
 
 	@PreAuthorize ( "hasAnyRole('ADMIN')" )
