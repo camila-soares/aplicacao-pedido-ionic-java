@@ -49,7 +49,7 @@ public class PedidoService {
     private EmailService emailService;
 
 
-	public Pedido find(Integer id) throws ObjectNotFoundException {
+	public Pedido find(Integer id)  {
 		Optional<Pedido> pedido = pedidoRepository.findById ( id );
 		return pedido.orElseThrow ( () -> new ObjectNotFoundException (
 				"Objeto não encontrado!" + id + ", Tipo:" + Pedido.class.getName ()
@@ -57,7 +57,7 @@ public class PedidoService {
 	}
 	
 	
-	public Pedido insert(Pedido obj) throws ObjectNotFoundException {
+	public Pedido insert(Pedido obj)  {
 		obj.setId(null);
 		obj.setInstante(new Date());
 		obj.setClient ( clientService.find ( obj.getClient ().getId () ) );
@@ -80,14 +80,14 @@ public class PedidoService {
 		return obj;
 	}
 
-	public Page<Pedido> findPage(Integer page, Integer linesPage, String orderBy, String direction){
-		UserSS user = UserService.authenticated ();
-		if(user == null){
-			throw new AuthorizationException ( "Acesso negado" );
-		}
-		PageRequest pageRequest = new PageRequest ( page, linesPage, Sort.Direction.valueOf ( direction ) , orderBy );
-		Client client = clientService.find ( user.getId () );
-		return pedidoRepository.findByClient ( client, pageRequest );
-	}
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Client cliente =  clientService.find(user.getId());
+        return pedidoRepository.findByClient(cliente, pageRequest);
+    }
 
 }

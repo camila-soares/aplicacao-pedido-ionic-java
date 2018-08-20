@@ -3,9 +3,8 @@ package com.camilasoares.cursomc.services;
 import com.camilasoares.cursomc.domain.Client;
 import com.camilasoares.cursomc.domain.Pedido;
 import org.springframework.mail.SimpleMailMessage;
-import org.springframework.stereotype.Service;
 
-@Service
+
 public interface EmailService {
 
     void sendOrderConfirmationEmail(Pedido obj);
