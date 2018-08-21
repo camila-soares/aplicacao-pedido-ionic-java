@@ -15,7 +15,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import java.util.Optional;
 
 
 @Service
@@ -25,13 +25,10 @@ public class CategoryService {
 	private  CategoryRepository categoryRepository;
 
 
-	public Category find(Integer id) throws ObjectNotFoundException{
-		Category obj = categoryRepository.findOne(id);
-		if(obj == null) {
-			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
-					+ ", Tipo: " + Category.class.getName());
-		}
-		return obj;
+	public Category find(Integer id) {
+		Optional<Category> obj = categoryRepository.findById(id);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Category.class.getName()));
 	}
 	
 	
@@ -54,7 +51,7 @@ public class CategoryService {
 	public void delete(Integer id) throws ObjectNotFoundException {
 		find(id);
 		try{
-			categoryRepository.delete(id);
+			categoryRepository.deleteById (id);
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel uma Categoria que possiu produto");

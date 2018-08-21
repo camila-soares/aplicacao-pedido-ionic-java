@@ -1,5 +1,6 @@
 package com.camilasoares.cursomc.domain;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -11,8 +12,6 @@ import java.util.Set;
 
 @Entity
 public class Product implements Serializable {
-
-	
 	private static final long serialVersionUID = 1L;
 	
 	@Id

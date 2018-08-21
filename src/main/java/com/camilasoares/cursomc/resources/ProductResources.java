@@ -1,10 +1,9 @@
 package com.camilasoares.cursomc.resources;
 
-import com.camilasoares.cursomc.resources.utils.URL;
 import com.camilasoares.cursomc.domain.Product;
 import com.camilasoares.cursomc.dto.ProductDTO;
+import com.camilasoares.cursomc.resources.utils.URL;
 import com.camilasoares.cursomc.services.ProductService;
-import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,7 @@ public class ProductResources {
 
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Product> find(@PathVariable Integer id) throws ObjectNotFoundException {
+	public ResponseEntity<Product> find(@PathVariable Integer id)  {
 		Product prod = productService.find(id);
 		return ResponseEntity.ok().body(prod);
 	}

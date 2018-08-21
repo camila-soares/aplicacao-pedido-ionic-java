@@ -47,6 +47,8 @@ public class Client implements Serializable {
 	@OneToMany(mappedBy="client")
 	private List<Pedido> pedidos = new ArrayList<>();
 
+
+
 	public Client() {
 		addPerfil(Perfil.CLIENTE);
 	}
@@ -141,6 +143,7 @@ public class Client implements Serializable {
 	public void setPedidos(List<Pedido> pedidos) {
 		this.pedidos = pedidos;
 	}
+
 
 	@Override
 	public int hashCode() {

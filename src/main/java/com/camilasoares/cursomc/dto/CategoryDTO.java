@@ -2,8 +2,8 @@ package com.camilasoares.cursomc.dto;
 
 import com.camilasoares.cursomc.domain.Category;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 public class CategoryDTO implements Serializable{

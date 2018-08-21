@@ -7,10 +7,12 @@ import com.camilasoares.cursomc.domain.ItemPedido;
 import com.camilasoares.cursomc.domain.PaymentBoleto;
 import com.camilasoares.cursomc.domain.Pedido;
 import com.camilasoares.cursomc.domain.enums.EstadoPagamento;
-import com.camilasoares.cursomc.repositories.*;
+import com.camilasoares.cursomc.repositories.ItemPedidoRepository;
+import com.camilasoares.cursomc.repositories.PaymentRepository;
+import com.camilasoares.cursomc.repositories.PedidoRepository;
 import com.camilasoares.cursomc.security.UserSS;
 import com.camilasoares.cursomc.services.exception.AuthorizationException;
-import javassist.tools.rmi.ObjectNotFoundException;
+import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +20,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 
 @Service
 public class PedidoService {
@@ -28,8 +31,9 @@ public class PedidoService {
 	@Autowired
 	private BoletoService boletoService;
 	
+
 	@Autowired
-	private ProductRepository productRepository;
+	private ProductService productService;
 	
 	@Autowired
 	private PaymentRepository paymentRepository;
@@ -37,26 +41,26 @@ public class PedidoService {
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 
+
 	@Autowired
-	private ClientRepository clientRepository;
+	private ClientService clientService;
 
 	@Autowired
     private EmailService emailService;
-	
-	public Pedido find(Integer id) throws ObjectNotFoundException {
-		Pedido pedido = pedidoRepository.findOne ( id );
-		if(pedido == null) {
-			throw new ObjectNotFoundException("Pedido não encontrado! Id: " + id
-					+ ", Tipo: " + Pedido.class.getName());
-		}
-		return pedido;
+
+
+	public Pedido find(Integer id)  {
+		Optional<Pedido> pedido = pedidoRepository.findById ( id );
+		return pedido.orElseThrow ( () -> new ObjectNotFoundException (
+				"Objeto não encontrado!" + id + ", Tipo:" + Pedido.class.getName ()
+		) );
 	}
 	
 	
-	public Pedido insert(Pedido obj){
-		obj.setId(1);
+	public Pedido insert(Pedido obj)  {
+		obj.setId(null);
 		obj.setInstante(new Date());
-		obj.setClient ( clientRepository.findOne ( obj.getClient ().getId () ) );
+		obj.setClient ( clientService.find ( obj.getClient ().getId () ) );
 		obj.getPayment().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPayment().setPedido(obj);
 		if(obj.getPayment() instanceof PaymentBoleto){
@@ -67,23 +71,23 @@ public class PedidoService {
 		paymentRepository.save(obj.getPayment());
 		for(ItemPedido ip : obj.getItens()){
 			ip.setDesconto(0.0);
-			ip.setProduct ( productRepository.findOne ( ip.getProduct ().getId () ) );
+			ip.setProduct ( productService.find ( ip.getProduct ().getId () ) );
 			ip.setPreco(ip.getProduct ().getPreco ());
 			ip.setPedido(obj);
 		}
-		itemPedidoRepository.save(obj.getItens());
+		itemPedidoRepository.saveAll (obj.getItens());
 		emailService.sendOrderConfirmationEmail ( obj );
 		return obj;
 	}
 
-	public Page<Pedido> findPage(Integer page, Integer linesPage, String orderBy, String direction){
-		UserSS user = UserService.authenticated ();
-		if(user == null){
-			throw new AuthorizationException ( "Acesso negado" );
-		}
-		PageRequest pageRequest = new PageRequest ( page, linesPage, Sort.Direction.valueOf ( direction ) , orderBy );
-		Client client = clientRepository.findOne ( user.getId () );
-		return pedidoRepository.findByClient ( client, pageRequest );
-	}
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Client cliente =  clientService.find(user.getId());
+        return pedidoRepository.findByClient(cliente, pageRequest);
+    }
 
 }

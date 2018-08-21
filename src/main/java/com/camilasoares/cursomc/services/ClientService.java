@@ -14,6 +14,7 @@ import com.camilasoares.cursomc.services.exception.AuthorizationException;
 import com.camilasoares.cursomc.services.exception.DataIntegrityException;
 import com.camilasoares.cursomc.services.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,8 +22,13 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.processing.FilerException;
+import java.awt.image.BufferedImage;
+import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -38,8 +44,16 @@ public class ClientService {
 
 	@Autowired
 	private S3Service s3Service;
-	
-	
+
+	@Autowired
+	private ImageService imageService;
+
+	@Value ( "${img.prefix.client.profile}" )
+	private String prefix;
+
+	@Value ("${img.profile.size}")
+	private Integer size;
+
 	
 	public Client find(Integer id) {
 
@@ -48,19 +62,17 @@ public class ClientService {
 			throw new AuthorizationException ("Acesso Negado");
 		}
 
-		Client obj = clientRepository.findOne(id);
-		if(obj == null) {
-			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
-					+ ", Tipo: " + Client.class.getName());
-		}
-		return obj;
+		Optional<Client> obj = clientRepository.findById (id);
+		return obj.orElseThrow ( () -> new ObjectNotFoundException (
+				"Objeto não encontrado! id:" + id + ", Tipo:"+ Client.class.getName ()
+		) );
 	}
 
 	@Transactional
 	public  Client insert(Client obj) {
 		obj.setId(null);
 		obj = clientRepository.save(obj);
-		addressRepository.save(obj.getEnderecos());
+		addressRepository.saveAll (obj.getEnderecos());
 		return obj;
 	}
 
@@ -79,7 +91,7 @@ public class ClientService {
 	public void delete(Integer id) throws ObjectNotFoundException {
 		find(id);
 		try{
-		clientRepository.delete(id);
+		clientRepository.deleteById (id);
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new DataIntegrityException("Não é possivel excluir  Cliente o mesmo possui pedidos");
@@ -93,8 +105,23 @@ public class ClientService {
 
 
 	public Page<Client> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
-		PageRequest pageRequest = new PageRequest (page, linesPerPage, Direction.valueOf(direction), orderBy);
+		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return clientRepository.findAll(pageRequest);
+	}
+
+	public Client findByEMail(String email){
+		UserSS user = UserService.authenticated ();
+		if(user == null || !user.hasRole ( Perfil.ADMIN ) && !email.equals ( user.getPassword () )){
+			throw new AuthorizationException ( "Acesso negado" );
+		}
+
+		Client obj = clientRepository.findByEmail ( email );
+		if(obj == null ){
+			throw new ObjectNotFoundException (
+					"Objeto não encontrado! Id:" + user.getId () + ", Tipo:" + Client.class.getName ()
+			);
+		}
+		return obj;
 	}
 
 	public Client fromDTO(ClientDTO objDTO) {
@@ -117,16 +144,18 @@ public class ClientService {
 		return cli;
 	}
 
-
-    public Client findByEmail(String email) {
+	public URI uploadProfilePicture(MultipartFile multipartFile) throws  FilerException {
 		UserSS user = UserService.authenticated ();
-		if(user == null || !user.hasRole (Perfil.ADMIN) && !email.equals(user.getUsername ())){
+		if(user == null){
 			throw new AuthorizationException ( "Acesso negado" );
 		}
-		Client obj = clientRepository.findByEmail ( email );
-		if(obj == null){
-			throw new ObjectNotFoundException ( "Objeto não encontrado! Id"+ user.getId () + ", Tipo: " + Client.class.getName () );
+
+		BufferedImage jpgImage = imageService.getJpgImageFromFile ( multipartFile );
+		jpgImage = imageService.cropSquare ( jpgImage );
+		jpgImage = imageService.resize (jpgImage, size );
+		String fileName = prefix + user.getId () + ".jpg";
+
+		return s3Service.uploadFile ( imageService.getInputStream ( jpgImage, "jpg"), fileName, "image" );
 		}
-		return obj;
-	}
+
 }

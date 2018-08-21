@@ -12,7 +12,11 @@ public class SpringIonicApplication implements CommandLineRunner {
 	public static void main(String[] args) {SpringApplication.run(SpringIonicApplication.class, args);}
 
 
-    @Override
-	public void run(String... args) throws Exception {}
+
+
+	@Override
+	public void run(String... args)  {
+	}
+
 
 }
