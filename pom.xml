@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.camilasoares.cursomc</groupId>
+    <groupId>com.camilasoares</groupId>
     <artifactId>aplicacao-ionic</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
@@ -90,6 +90,11 @@
             <artifactId>imgscalr-lib</artifactId>
             <version>4.2</version>
         </dependency>
+        <dependency>
+            <groupId>io.spring.sample</groupId>
+            <artifactId>function-sample-azure</artifactId>
+            <version>1.0.0.BUILD-SNAPSHOT</version>
+        </dependency>
 
     </dependencies>
 
@@ -101,11 +106,12 @@
                 <artifactId>docker-maven-plugin</artifactId>
                 <version>1.0.0</version>
                 <configuration>
-                    <imageName>example</imageName>
-                    <baseImage>java</baseImage>
+                    <imageName>aplicacao-ionic-java</imageName>
+                    <baseImage>java:8</baseImage>
                     <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
-                    <!-- copy the service's jar file from target into the root directory
-                        of the image -->
+                    <dockerHost>https://192.168.99.100:2376</dockerHost>
+                    <dockerCertPath>C:\Users\muchmore\.docker\machine\machines\default</dockerCertPath>
+                    <dockerDirectory>C:\Program Files\Docker Toolbox\kitematic\resources\resources</dockerDirectory>
                     <resources>
                         <resource>
                             <targetPath>/</targetPath>

@@ -57,6 +57,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         String token = jwtUtil.generateToken(username);
         res.addHeader("Authorization", "Bearer " + token);
         res.addHeader("access-control-expose-headers", "Authorization");
+        res.getWriter ().append ( "{\"access_token\": " + token + " }" );
     }
 
     private class JWTAuthenticationFailureHandler implements AuthenticationFailureHandler {

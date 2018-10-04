@@ -1,8 +1,8 @@
 version: '3.4'
 services:
     app:
-        image: camila/web
-        container_name: api-java
+        image: aplicacao-ionic
+        container_name: aplicacao-ionic
         ports:
           - 8080:80
         depends_on:

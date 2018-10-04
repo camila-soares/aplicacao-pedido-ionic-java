@@ -111,7 +111,7 @@ public class ClientService {
 
 	public Client findByEMail(String email){
 		UserSS user = UserService.authenticated ();
-		if(user == null || !user.hasRole ( Perfil.ADMIN ) && !email.equals ( user.getPassword () )){
+		if(user == null  && !email.equals ( user.getPassword () )){
 			throw new AuthorizationException ( "Acesso negado" );
 		}
 

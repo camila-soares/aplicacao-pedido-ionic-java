@@ -51,13 +51,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS_POST = {
             "/clientes",
-            "/auth/forgot/**"
+            "/user",
+            "/auth**"
     };
 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
+        /*pega os profiles ativos se nos profiles ativos estiver a palavra test é dado o comando http.headers().frameOptions().disable(); para liberar o acesso*/
         if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
             http.headers().frameOptions().disable();
         }

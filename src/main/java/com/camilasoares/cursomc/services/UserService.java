@@ -4,6 +4,7 @@ import com.camilasoares.cursomc.security.UserSS;
 import com.camilasoares.cursomc.services.exception.AuthorizationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+
 public class UserService {
 
     public static UserSS authenticated() throws AuthorizationException {
