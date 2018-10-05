@@ -17,6 +17,7 @@ public class ClientInsertValidator implements ConstraintValidator<ClientInsert, 
 
 	@Autowired
 	private ClientRepository clientRepository;
+
 	@Override
 	public void initialize(ClientInsert ann) {
 	}
@@ -26,23 +27,28 @@ public class ClientInsertValidator implements ConstraintValidator<ClientInsert, 
 	public boolean isValid(ClientNewDTO objDTO, ConstraintValidatorContext context) {
 		List<FieldMessage> list = new ArrayList<>();
 		
-		if(objDTO.getTipo().equals(ClientType.PESSOAFISICA.getCod()) && !BR.isValidCNPJ(objDTO.getCpfOuCnpj())){
+		if(objDTO.getTipo().equals(ClientType.PESSOAFISICA.getCod()) && !BR.isValidCPF(objDTO.getCpfOuCnpj())){
 			list.add(new FieldMessage("CpfOuCnpj", "CPF inválido"));
 		}
 		
 		if(objDTO.getTipo().equals(ClientType.PESSOAJURIDICA.getCod()) && !BR.isValidCNPJ(objDTO.getCpfOuCnpj())){
 			list.add(new FieldMessage("CpfOuCnpj", "CNPJ inválido"));
 		}
-		
 
-		Client aux = clientRepository.findByEmail(objDTO.getEmail());
-		if(aux != null){
+		Client cpfaux = clientRepository.findByCpfOuCnpj ( objDTO.getCpfOuCnpj () );
+		if(cpfaux != null){
+			list.add ( new FieldMessage ( "CpfOuCnpj", "CpfOuCnpj já existe" ) );
+		}
+
+		Client cnpjaux = clientRepository.findByEmail(objDTO.getEmail());
+		if(cnpjaux != null){
 			list.add(new FieldMessage("email", "Email já existe"));
 		}
 		
 		for(FieldMessage e : list){
 			context.disableDefaultConstraintViolation();
-			context.buildConstraintViolationWithTemplate(e.getMessage()).addPropertyNode(e.getFieldName());
+			context.buildConstraintViolationWithTemplate(e.getMessage()).addPropertyNode(e.getFieldName())
+					.addConstraintViolation ();
 		}
 		return list.isEmpty();
 	}
