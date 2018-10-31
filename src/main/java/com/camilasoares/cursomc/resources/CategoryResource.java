@@ -5,6 +5,9 @@ package com.camilasoares.cursomc.resources;
 import com.camilasoares.cursomc.domain.Category;
 import com.camilasoares.cursomc.dto.CategoryDTO;
 import com.camilasoares.cursomc.services.CategoryService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import javassist.tools.rmi.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +32,7 @@ public class CategoryResource {
 		this.categoryService = categoryService;
 	}
 
+	@ApiOperation ( value = "Busca por id")
 	@GetMapping("/{id}")
 	public ResponseEntity<Category> find(@PathVariable Integer id)  {
 		Category obj = categoryService.find(id);
@@ -36,7 +40,8 @@ public class CategoryResource {
 		
 	}
 
-	//@PreAuthorize( "hasAnyRole('ADMIN')" )
+	@PreAuthorize( "hasAnyRole('ADMIN')" )
+	@ApiOperation ( value = "Inserção de Categorias")
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Void> insert(@Valid @RequestBody CategoryDTO objDTO){
@@ -48,7 +53,8 @@ public class CategoryResource {
 		return ResponseEntity.created(uri).build();
 	}
 
-	//@PreAuthorize ( "hasAnyRole('ADMIN')" )
+	@PreAuthorize ( "hasAnyRole('ADMIN')" )
+	@ApiOperation ( value = "Atualiza Categorias")
 	@PutMapping("/{id}")
 	public ResponseEntity<Void> update(@Valid @RequestBody CategoryDTO objDTO, @PathVariable Integer id){
 		Category obj = categoryService.fromDTO(objDTO);
@@ -59,6 +65,10 @@ public class CategoryResource {
 	}
 
 	@PreAuthorize ( "hasAnyRole('ADMIN')" )
+	@ApiOperation ( value = "Remove categorias")
+	@ApiResponses ( value = {
+			@ApiResponse ( code = 400, message= "Não é possível excluir uma categoria que possui produtos"),
+			@ApiResponse ( code = 404, message = "Código inexistente")})
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> delete(@PathVariable Integer id) throws ObjectNotFoundException {
 		categoryService.delete(id);
@@ -67,6 +77,7 @@ public class CategoryResource {
 	}
 	
 	@GetMapping
+	@ApiOperation ( value = "Retorna todas Categorias")
 	public ResponseEntity<List<CategoryDTO>> findAll() throws ObjectNotFoundException {
 		List<Category> list = categoryService.findAll();
 		List<CategoryDTO> listDTO = list.stream().map(obj -> new CategoryDTO(obj)).collect(Collectors.toList());
