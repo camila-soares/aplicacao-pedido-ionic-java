@@ -1,0 +1,14 @@
+version: '3'
+services:
+  docker-app:
+    image: 150787/aplicacao-pedido-ionic
+    ports:
+      - "8181:8181"
+    depends_on:
+      - docker-postgres
+  docker-postgres:
+      image: postgres:10.4
+      enviroment:
+        - POSTGRES_DB=db
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
