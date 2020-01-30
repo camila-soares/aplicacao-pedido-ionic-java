@@ -7,11 +7,7 @@
     <artifactId>aplicacao-ionic-java</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
-<<<<<<< HEAD
-    <name>aplicacao-ionic</name>
-=======
     <name>aplicacao-ionic-java</name>
->>>>>>> 04fb0abaffbba9d03d2893508ba81d79c6d1f8de
     <description>Demo project for Spring Boot</description>
 
     <parent>
@@ -120,8 +116,7 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-            <plugin>
-<<<<<<< HEAD
+            <!--plugin>
 				<groupId>com.spotify</groupId>
 				<artifactId>dockerfile-maven-plugin</artifactId>
 				<version>1.2.1</version>
@@ -145,17 +140,13 @@
 				</executions>
 				<configuration>
 					<useMavenSettingsForAuth>true</useMavenSettingsForAuth>
-<<<<<<< HEAD
-					<repository>150787/aplicacao-ionic</repository>
-=======
 					<repository>150787/aplicacao-ionic-java</repository>
->>>>>>> 04fb0abaffbba9d03d2893508ba81d79c6d1f8de
 					<tag>${project.version}</tag>
 					<buildArgs>
 					  <JAR_FILE>${project.build.finalName}.jar</JAR_FILE>
 					</buildArgs>
 				</configuration>
-			</plugin>
+			</plugin-->
         </plugins>
     </build>
 
