@@ -37,12 +37,13 @@ public class ClientResource {
 	@GetMapping
 	public ResponseEntity<List<ClientDTO>> findAll() {
 		List<Client> list = clientService.findAll();
-		List<ClientDTO> listDTO = list.stream().map(obj -> new ClientDTO(obj)).collect(Collectors.toList());
+		List<ClientDTO> listDTO = list.stream().map(obj ->
+		new ClientDTO(obj)).collect(Collectors.toList());
 		return ResponseEntity.ok().body(listDTO);
 
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/{id}")	
 	public ResponseEntity<Client> find(@PathVariable Integer id) {
 		Client cli = clientService.find(id);
 		return ResponseEntity.ok().body(cli);
@@ -51,6 +52,7 @@ public class ClientResource {
 
 	
 	@PostMapping
+	//@PreAuthorize ( "hasAnyRole('ADMIN')" )
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClientNewDTO objDTO){
 		Client obj = clientService.fromDTO(objDTO);

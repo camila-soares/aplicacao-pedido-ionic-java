@@ -8,6 +8,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -37,24 +38,16 @@ public class AuthService {
         clientRepository.save ( client );
 
         emailService.sendNewPasswordEmail ( client , newPass );
+        System.out.println ( "email enviado------  " + newPass);
+    }
+    
+    public void createPasswordResetTokenForUser(Client client, String token) {
+    	
     }
 
     private String newPassword() {
-        char[] vet = new char[10];
-        for (int i = 0; i < 10; i++) {
-            vet[1] = randomChar ();
-        }
-        return new String ( vet );
+    	String token = UUID.randomUUID().toString();
+		return token;
     }
 
-    private char randomChar() {
-        int opt = rand.nextInt ( 3 );
-        if (opt == 0) { //gera um digito
-            return ( char ) (rand.nextInt ( 10 ) + 48);
-        } else if (opt == 1) { //gera letra maiuscula
-            return ( char ) (rand.nextInt ( 26 ) + 65);
-        } else { // gera letra minuscula
-            return ( char ) (rand.nextInt ( 26 ) + 97);
-        }
-    }
 }

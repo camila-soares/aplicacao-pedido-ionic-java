@@ -1,11 +1,9 @@
 package com.camilasoares.cursomc.dto;
 
-
-
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
-
 import java.io.Serializable;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 
 public class EmailDTO implements Serializable {
     private static final long serialVersionUID = 1L;

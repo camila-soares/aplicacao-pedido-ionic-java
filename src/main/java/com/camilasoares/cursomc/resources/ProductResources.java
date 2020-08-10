@@ -36,7 +36,8 @@ public class ProductResources {
 			@RequestParam(value="direction", defaultValue="ASC")  String direction) {
 		String nomeDecoded = URL.decodeParam(nome);
 		List<Integer> ids = URL.decodeIntList(categorias);
-		Page<Product> list = productService.seach(nomeDecoded, ids, page, linesForpage, orderBy, direction);
+		Page<Product> list = productService.seach(
+				nomeDecoded, ids, page, linesForpage, orderBy, direction);
 		Page<ProductDTO> listDTO = list.map(obj -> new ProductDTO(obj));
 		return ResponseEntity.ok().body(listDTO);
 		

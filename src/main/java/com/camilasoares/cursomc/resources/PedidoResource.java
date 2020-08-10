@@ -5,6 +5,7 @@ package com.camilasoares.cursomc.resources;
 import com.camilasoares.cursomc.domain.Pedido;
 import com.camilasoares.cursomc.services.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,10 @@ import java.net.URI;
 @RequestMapping("/pedidos")
 public class PedidoResource {
 
-//	@Bean
-//	public PedidoService pedidoService(){
-//		return new PedidoService ();
-//	}
+	@Bean
+	public PedidoService pedidoService(){
+		return new PedidoService ();
+	}
 
 	@Autowired
 	private PedidoService pedidoService;

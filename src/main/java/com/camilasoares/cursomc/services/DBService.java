@@ -109,15 +109,15 @@ public class DBService {
 		Product p49 = new Product(null, "produto49", 90.00);
 		Product p50 = new Product(null, "produto50", 90.00);
 
-		cat1.getProducts ().addAll(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20,
+		cat1.getProdutos ().addAll(Arrays.asList(p12, p13, p14, p15, p16, p17, p18, p19, p20,
 				p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p34, p35, p36, p37, p38,
 				p39, p40, p41, p42, p43, p44, p45, p46, p47, p48, p49, p50));
-		cat2.getProducts().addAll(Arrays.asList(p2,p4));
-		cat3.getProducts().addAll(Arrays.asList(p5,p6));
-		cat4.getProducts().addAll(Arrays.asList(p1,p2, p3, p7));
-		cat5.getProducts().addAll(Arrays.asList(p8));
-		cat6.getProducts().addAll(Arrays.asList(p9,p10));
-		cat7.getProducts().addAll(Arrays.asList(p11));
+		cat2.getProdutos().addAll(Arrays.asList(p2,p4));
+		cat3.getProdutos().addAll(Arrays.asList(p5,p6));
+		cat4.getProdutos().addAll(Arrays.asList(p1,p2, p3, p7));
+		cat5.getProdutos().addAll(Arrays.asList(p8));
+		cat6.getProdutos().addAll(Arrays.asList(p9,p10));
+		cat7.getProdutos().addAll(Arrays.asList(p11));
 
 
 		p1.getCategories().addAll(Arrays.asList(cat1, cat4));
